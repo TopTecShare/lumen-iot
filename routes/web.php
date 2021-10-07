@@ -16,3 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->post('register/{sensorID}', 'RegisterController@register');
+//TODO remove get method, just for testing in browser
+$router->get('/register/{sensorID}', 'RegisterController@register');
+

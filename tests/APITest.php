@@ -17,5 +17,11 @@ class APITest extends TestCase
         $this->seeStatusCode(200);
         $res_array = (array)json_decode($this->response->content());
         $this->assertArrayHasKey('uuid', $res_array);
+
+        //do not let for duplicate UUID
+        $s = new \App\Models\Sensor();
+        $s->uuid = $res_array['uuid'];
+        $this->expectException('PDOException');
+        $s->save();
     }
 }

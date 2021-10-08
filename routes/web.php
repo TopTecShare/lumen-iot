@@ -20,4 +20,7 @@ $router->get('/', function () use ($router) {
 $router->post('register/{sensorID}', 'RegisterController@register');
 //TODO remove get method, just for testing in browser
 $router->get('/register/{sensorID}', 'RegisterController@register');
+$router->get('/store/{uuid}', 'StoreController@store');
+$router->post('/store/{uuid}', 'StoreController@store');
+
 

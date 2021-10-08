@@ -20,4 +20,9 @@ class Sensor extends Model
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
+    public function rawDatapoints()
+    {
+        return $this->hasMany(RawData::class);
+    }
+
 }

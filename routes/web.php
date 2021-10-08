@@ -22,5 +22,8 @@ $router->post('register/{sensorID}', 'RegisterController@register');
 $router->get('/register/{sensorID}', 'RegisterController@register');
 $router->get('/store/{uuid}', 'StoreController@store');
 $router->post('/store/{uuid}', 'StoreController@store');
+$router->get('/sensors/{uuid}', 'SensorController@show');
+$router->get('/sensors/', 'SensorController@index');
+
 
 

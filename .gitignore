@@ -5,4 +5,4 @@ Homestead.yaml
 .env
 .phpunit.result.cache
 *~
-.env.devel
+.env.*

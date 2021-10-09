@@ -2,8 +2,18 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+
+$envFileName = ".env";
+if (php_sapi_name() == 'cli') {
+    $input = new \Symfony\Component\Console\Input\ArgvInput();
+    $envParameterOption = $input->getParameterOption('--env');
+    if ($input->hasParameterOption('--env') && file_exists(__DIR__ . '/../' . $envFileName . '.' . $envParameterOption)) {
+        $envFileName .= '.' . $envParameterOption;
+    }
+}
+
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__)
+    dirname(__DIR__), $envFileName
 ))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
@@ -92,7 +102,7 @@ $app->configure('app');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
+ $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 

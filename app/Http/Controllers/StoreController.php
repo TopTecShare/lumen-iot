@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RawData;
 use App\Models\Sensor;
+
 //use App\Support\RouteParam;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -20,11 +21,20 @@ class StoreController extends Controller
         }
         $json = Arr::get($input, 'json', null);
 
+        if (!isJson($json)) {
+            return (new Response('Not a JSON/JSON errors: '.json_last_error(), 422));
+        }
 
         $response = $sensor->uuid . "\n" . print_r($json, true);
 
         $raw = new RawData();
         $raw->sensor_id = $sensor->id;
         return (new Response($response, 200));
+    }
+
+    private function isJson($string)
+    {
+        json_decode($string);
+        return json_last_error() === JSON_ERROR_NONE;
     }
 }

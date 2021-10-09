@@ -5,6 +5,7 @@ use Laravel\Lumen\Testing\DatabaseTransactions;
 
 class APITest extends TestCase
 {
+    use DatabaseTransactions;
     /**
      * A basic test example.
      *

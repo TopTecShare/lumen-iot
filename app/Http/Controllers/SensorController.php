@@ -14,19 +14,12 @@ class SensorController extends Controller
 {
     public function show(Request $request, $uuid)
     {
-        $input = $request->only('json');
         $sensor = Sensor::where('uuid', $uuid)->first();
         if ($sensor == null) {
             return (new Response('', 404));
         }
-        $json = Arr::get($input, 'json', null);
 
-
-        $response = $sensor->uuid . "\n" . print_r($json, true);
-
-        $raw = new RawData();
-        $raw->sensor_id = $sensor->id;
-        return (new Response($response, 200));
+        return view('sensor',['sensor' => $sensor]);
     }
     public function index()
     {

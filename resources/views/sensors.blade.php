@@ -7,7 +7,8 @@ AAA
 <table>
     @foreach($sensors as $sensor)
         <tr>
-            <td><a href="/sensors/{{$sensor->uuid}}">{{$sensor->uuid}}</a>a</td>
+            <td><a href="/sensors/{{$sensor->uuid}}">{{$sensor->uuid}}</a></td>
+            <td>{{$sensor->rawDatapoints()->count()}}</td>
             <td>{{$sensor->sensor_number}}</td>
         </tr>
     @endforeach

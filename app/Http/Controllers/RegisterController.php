@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sensor;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -13,6 +14,6 @@ class RegisterController extends Controller
         $sensor->sensor_number = $sensorID;
         $sensor->uuid = Sensor::guidv4();
         $sensor->save();
-        return $sensor;
+        return(new Response($sensor->uuid,200));
     }
 }

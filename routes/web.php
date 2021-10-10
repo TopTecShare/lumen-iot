@@ -14,10 +14,10 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return $router->app->version().getenv('APP_ENV') ;
 });
 
-$router->post('register/{sensorID}', 'RegisterController@register');
+$router->post('/register/{sensorID}', 'RegisterController@register');
 //TODO remove get method, just for testing in browser
 $router->get('/register/{sensorID}', 'RegisterController@register');
 $router->get('/store/{uuid}', 'StoreController@store');

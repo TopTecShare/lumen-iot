@@ -2,8 +2,11 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-
 $envFileName = ".env";
+if (getenv('APP_ENV') != null)
+{
+    $envFileName = $envFileName . '.' .getenv(['APP_ENV']);
+}
 if (php_sapi_name() == 'cli') {
     $input = new \Symfony\Component\Console\Input\ArgvInput();
     $envParameterOption = $input->getParameterOption('--env');
@@ -33,7 +36,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+ $app->withFacades();
 
  $app->withEloquent();
 

@@ -14,16 +14,23 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version().getenv('APP_ENV') ;
+    return $router->app->version() . getenv('APP_ENV');
 });
 
 $router->post('/register/{sensorID}', 'RegisterController@register');
-//TODO remove get method, just for testing in browser
-$router->get('/register/{sensorID}', 'RegisterController@register');
-$router->get('/store/{uuid}', 'StoreController@store');
 $router->post('/store/{uuid}', 'StoreController@store');
-$router->get('/sensors/{uuid}', 'SensorController@show');
-$router->get('/sensors/', 'SensorController@index');
+$router->get('/sensors/{uuid}', [
+        'middleware' => 'auth',
+        'uses' => 'SensorController@show'
+    ]
+);
+$router->get('/sensors/', [
+    'middleware' => 'auth',
+    'uses' => 'SensorController@index'
+]);
+
+$router->get('/login','LoginController@form');
+$router->post('/login','LoginController@login');
 
 
 

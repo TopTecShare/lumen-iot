@@ -1,4 +1,5 @@
 AddHandler application/x-httpd-php74 php
+SetEnv APP_ENV production
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>

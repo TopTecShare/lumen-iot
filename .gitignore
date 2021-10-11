@@ -2,7 +2,7 @@
 /.idea
 Homestead.json
 Homestead.yaml
-.env
+.env-old
 .phpunit.result.cache
 *~
 .env.*

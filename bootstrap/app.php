@@ -5,7 +5,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $envFileName = ".env";
 if (getenv('APP_ENV') != null)
 {
-    $envFileName = $envFileName . '.' .getenv(['APP_ENV']);
+    $envFileName = $envFileName . '.' .getenv('APP_ENV');
 }
 if (php_sapi_name() == 'cli') {
     $input = new \Symfony\Component\Console\Input\ArgvInput();
@@ -14,9 +14,10 @@ if (php_sapi_name() == 'cli') {
         $envFileName .= '.' . $envParameterOption;
     }
 }
-
+$path =     dirname(__DIR__).'/';
+//print("DIR: ".$path.$envFileName);
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-    dirname(__DIR__), $envFileName
+    $path, $envFileName
 ))->bootstrap();
 
 date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));

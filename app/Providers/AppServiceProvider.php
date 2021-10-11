@@ -15,13 +15,13 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
 //        (new \Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
-//            dirname(__DIR__.'/../../'), '.env.'.$this->app->environment()
+//            dirname(__DIR__.'/../../'), '.env-old.'.$this->app->environment()
 //        ))->bootstrap();
 //        print($this->app->environment());
 
-//        $dotenv = Dotenv::createImmutable(__DIR__.'/../../', '.env.'.$this->app->environment());
+//        $dotenv = Dotenv::createImmutable(__DIR__.'/../../', '.env-old.'.$this->app->environment());
 //        $dotenv->safeLoad();
-//        Dotenv::create(base_path(), '.env.' . $this->app->environment())->overload();
+//        Dotenv::create(base_path(), '.env-old.' . $this->app->environment())->overload();
 
         //...
     }

@@ -18,8 +18,9 @@ class SensorController extends Controller
         if ($sensor == null) {
             return (new Response('', 404));
         }
+        $timezone = new \DateTimeZone('Europe/Warsaw');
 
-        return view('sensor',['sensor' => $sensor]);
+        return view('sensor',['sensor' => $sensor, 'tz' => $timezone]);
     }
     public function index()
     {

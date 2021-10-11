@@ -24,7 +24,7 @@ class SensorController extends Controller
     }
     public function index()
     {
-        $sensors = Sensor::all();
+        $sensors = Sensor::withCount('rawDatapoints')->orderBy('raw_datapoints_count', 'desc')->get();
         return view('sensors',['sensors' => $sensors]);
     }
 }

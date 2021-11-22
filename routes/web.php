@@ -28,6 +28,7 @@ $router->get('/sensors/', [
     'middleware' => 'auth',
     'uses' => 'SensorController@index'
 ]);
+$router->post('/lora/{id}', 'LoraController@lora');
 
 $router->get('/login','LoginController@form');
 $router->post('/login','LoginController@login');

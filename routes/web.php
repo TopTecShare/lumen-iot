@@ -14,7 +14,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version() . getenv('APP_ENV');
+    return redirect('http://air.nettigo.pl/');
 });
 
 $router->post('/register/{sensorID}', 'RegisterController@register');

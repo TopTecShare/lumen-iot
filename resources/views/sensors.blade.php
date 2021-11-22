@@ -13,8 +13,9 @@ AAA
     <th>SensorID</th>
     </thead>
     <tbody>
-    @foreach($sensors as $sensor)
+    @foreach($sensors as $cnt => $sensor)
         <tr>
+            <td>{{$cnt}}</td>
             <td><a href="/sensors/{{$sensor->uuid}}">{{$sensor->uuid}}</a></td>
             <td>{{$sensor->rawDatapoints()->count()}}</td>
             <td>@if($sensor->rawDatapoints()->count() > 0)

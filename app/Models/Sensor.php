@@ -22,7 +22,7 @@ class Sensor extends Model
 
     public function rawDatapoints()
     {
-        return $this->hasMany(RawData::class);
+        return $this->hasMany(RawData::class)->orderBy('created_at', 'desc');
     }
 
 }

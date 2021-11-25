@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\RawData;
+use App\Models\ProcessString;
+use App\Models\ProcessNumber;
 use App\Models\Sensor;
 
 //use App\Support\RouteParam;
@@ -19,6 +22,34 @@ class StoreController extends Controller
         return json_last_error() === JSON_ERROR_NONE;
     }
 
+    public function isNam($string)
+    {
+        preg_match('/-?([\d]+)(.([\d]+))?/', $string, $matches);
+        return $matches && $matches[0] == $string;
+    }
+
+    public function process($key, $value, $id) 
+    {
+        if($this->isNam($value)) {
+            // DB::table('process_number')->insert([
+            //     'json_id' => $id, 
+            //     'key' => $key, 
+            //     'value' => $value
+            //   ]);
+            $number = new ProcessNumber();
+            $number->json_id = $id;
+            $number->key = $key;
+            $number->value = $value;
+            $number->save();
+        } else {
+            $string = new ProcessString();
+            $string->json_id = $id;
+            $string->key = $key;
+            $string->value = $value;
+            $string->save();
+        }
+
+    }
     public function store(Request $request, $uuid)
     {
 //        $input = $request->only('json');
@@ -41,8 +72,21 @@ class StoreController extends Controller
 
         $raw = new RawData();
         $raw->sensor_id = $sensor->id;
-        $raw->json =json_encode($json);
+        $raw->json = json_encode($json);
+        $raw->processed = 1;
         $raw->save();
+        foreach($json as $key=>$value){
+            if(is_array($value)) {
+                foreach($value as $value_key=>$value_value) {
+                    $this->process($key . '_' . $value_key, $value_value, $raw->id);
+                }
+            } else {
+                $this->process($key, $value, $raw->id);
+            }
+
+
+        }
+
         return (new Response($response, 200));
     }
 

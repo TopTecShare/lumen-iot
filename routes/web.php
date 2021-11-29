@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -32,6 +33,9 @@ $router->post('/lora/{id}', 'LoraController@lora');
 
 $router->get('/login','LoginController@form');
 $router->post('/login','LoginController@login');
-
+$router->get('/migrate', function() {
+    $exitCode = Artisan::call('migrate');
+    return '<h1>Migration finished</h1>';
+});
 
 

@@ -39,8 +39,6 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
- $app->withFacades();
-
  $app->withEloquent();
 
 /*
@@ -95,6 +93,7 @@ $app->configure('app');
 
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
+     'admin' => App\Http\Middleware\Admin::class,
  ]);
 
 /*
@@ -110,6 +109,9 @@ $app->configure('app');
 
  $app->register(App\Providers\AppServiceProvider::class);
  $app->register(App\Providers\AuthServiceProvider::class);
+ $app->register(Illuminate\Mail\MailServiceProvider::class);
+ $app->configure('mail');
+ $app->withFacades(); 
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

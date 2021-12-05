@@ -30,6 +30,8 @@ class StoreController extends Controller
 
     public function process($key, $value, $id) 
     {
+        if($value == 'true') $value = 1;
+        if($value == 'false') $value = 0;
         if($this->isNam($value)) {
             // DB::table('process_number')->insert([
             //     'json_id' => $id, 
@@ -38,14 +40,14 @@ class StoreController extends Controller
             //   ]);
             $number = new ProcessNumber();
             $number->json_id = $id;
-            $number->key = $key;
-            $number->value = $value;
+            $number->json_key = $key;
+            $number->json_value = $value;
             $number->save();
         } else {
             $string = new ProcessString();
             $string->json_id = $id;
-            $string->key = $key;
-            $string->value = $value;
+            $string->json_key = $key;
+            $string->json_value = $value;
             $string->save();
         }
 

@@ -22,7 +22,7 @@ class SensorController extends Controller
 
         return view('sensor',['sensor' => $sensor, 'tz' => $timezone]);
     }
-    public function index()
+    public function index(Request $request)
     {
         $sensors = Sensor::withCount('rawDatapoints')->orderBy('raw_datapoints_count', 'desc')->get();
         return view('sensors',['sensors' => $sensors]);

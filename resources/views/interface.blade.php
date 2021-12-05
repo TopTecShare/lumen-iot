@@ -9,23 +9,23 @@
         />
     </head>
     <body class="container">
-        <form action="/login" accept-charset="UTF-8" method="post">
+        <form action="/interface" accept-charset="UTF-8" method="post">
             <p>
-                Login lub adres e-mail:
+                Komenda:
                 <br />
-                <input type="text" value="" name="id" />
-            </p>
-            <p>
-                Hasło:
-                <br />
-                <input type="password" name="pwd" />
+                <textarea
+                    type="query"
+                    name="query"
+                    class="form-control"
+                    rows="15"
+                ></textarea>
             </p>
             <p>
                 <input
                     type="submit"
                     name="commit"
                     class="btn btn-success"
-                    value="Zaloguj"
+                    value="Załaduj"
                     class="btn"
                 />
             </p>

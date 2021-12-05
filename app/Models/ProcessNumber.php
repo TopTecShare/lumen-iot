@@ -8,7 +8,7 @@ class ProcessNumber extends Model
 {
     //
     protected $fillable = [
-        'json_id', 'key', 'value',
+        'json_id', 'json_key', 'json_value',
     ];
 
     protected $hidden = [

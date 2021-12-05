@@ -18,8 +18,8 @@ class CreateProcessString extends Migration
             
             $table->integer('json_id')
             ->nullable(false);
-            $table->text('key');
-            $table->text('value');
+            $table->text('json_key');
+            $table->text('json_value');
 
             $table->timestamps();
         });

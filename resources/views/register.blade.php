@@ -1,8 +1,6 @@
 <html>
-<head>
-    <title>CNAM</title>
-</head>
-<body>
-
-</body>
+    <head>
+        <title>CNAM</title>
+    </head>
+    <body></body>
 </html>

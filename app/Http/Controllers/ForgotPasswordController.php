@@ -7,16 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use PHPMailer\PHPMailer\PHPMailer; 
-use PHPMailer\PHPMailer\Exception;
-// Base files 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
+use Illuminate\Support\Facades\Mail;
 
 class ForgotPasswordController extends Controller
 {
     //
+
     public function form()
     {
         return view('forgot');
@@ -24,8 +20,20 @@ class ForgotPasswordController extends Controller
 
     public function reset()
     {
-        $id = $_POST['id'];
+        $password = '';
+        $user = User::where('email', $_POST['email'])->first();
+        
+        if($user) $password = $user->password;
+        // else return view('forgot');
 
-        return view('forgot');
+        $data = array('name'=>$_POST['name'], 'password'=>$password);
+        try {
+            Mail::send('mail', $data, function($message) {
+                $message->to($_POST['email'], $_POST['name'])->subject('Your previous password here!');
+            });
+        } catch (\Throwable $e) { // For PHP 7
+            
+        } 
+        return redirect('/reset-password');
     }
 }

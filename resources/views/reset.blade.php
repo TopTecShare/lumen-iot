@@ -9,23 +9,34 @@
         />
     </head>
     <body class="container">
-        <form action="/login" accept-charset="UTF-8" method="post">
+        <form action="/reset-password" accept-charset="UTF-8" method="post">
             <p>
-                Login lub adres e-mail:
+                adres e-mail:
                 <br />
-                <input type="text" value="" name="id" />
+                <input type="text" value="" name="email" />
             </p>
             <p>
-                Hasło:
+                stare hasło
                 <br />
-                <input type="password" name="pwd" />
+                <input type="password" name="old" required />
             </p>
+            <p>
+                nowe hasło
+                <br />
+                <input type="password" name="password" required />
+            </p>
+            <p>
+                potwierdź hasło
+                <br />
+                <input type="password" name="confirm" required />
+            </p>
+
             <p>
                 <input
                     type="submit"
                     name="commit"
                     class="btn btn-success"
-                    value="Zaloguj"
+                    value="Wyślij maila"
                     class="btn"
                 />
             </p>

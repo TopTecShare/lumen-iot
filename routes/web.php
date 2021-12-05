@@ -25,7 +25,7 @@ $router->get('/sensors/{uuid}', [
         'uses' => 'SensorController@show'
     ]
 );
-$router->get('/sensors/', [
+$router->get('/sensors', [
     'middleware' => 'auth',
     'uses' => 'SensorController@index'
 ]);
@@ -33,6 +33,39 @@ $router->post('/lora/{id}', 'LoraController@lora');
 
 $router->get('/login','LoginController@form');
 $router->post('/login','LoginController@login');
+
+$router->get('/forgot-password','ForgotPasswordController@form');
+$router->post('/forgot-password','ForgotPasswordController@reset');
+
+$router->get('/reset-password','ResetPasswordController@form');
+$router->post('/reset-password','ResetPasswordController@reset');
+
+$router->get('/interface', [
+    'middleware' => 'auth',
+    'uses' => 'InterfaceController@form'
+]);
+$router->post('/interface', [
+    'middleware' => 'auth',
+    'uses' => 'InterfaceController@get'
+]);
+
+$router->get('/admin', [
+    'middleware' => ['auth', 'admin'], 
+    'uses' => 'AdminController@index'
+]);
+$router->post('/admin', [
+    'middleware' => ['auth', 'admin'],
+    'uses' => 'AdminController@create'
+]);
+$router->put('/admin', [
+    'middleware' => ['auth', 'admin'],
+    'uses' => 'AdminController@update'
+]);
+$router->delete('/admin', [
+    'middleware' => ['auth', 'admin'],
+    'uses' => 'AdminController@delete'
+]);
+
 $router->get('/migrate', function() {
     $exitCode = Artisan::call('migrate');
     return '<h1>Migration finished</h1>';

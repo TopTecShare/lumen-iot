@@ -17,8 +17,8 @@ class CreateProcessNumber extends Migration
             $table->id();
             $table->integer('json_id')
             ->nullable(false);
-            $table->text('key');
-            $table->double('value');
+            $table->text('json_key');
+            $table->double('json_value');
 
             $table->timestamps();
         });

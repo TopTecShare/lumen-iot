@@ -28,7 +28,7 @@ class StoreController extends Controller
         return $matches && $matches[0] == $string;
     }
 
-    public function process($key, $value, $id) 
+    public function process($key, $value, $id, $ver) 
     {
         if($value == 'true') $value = 1;
         if($value == 'false') $value = 0;
@@ -40,12 +40,14 @@ class StoreController extends Controller
             //   ]);
             $number = new ProcessNumber();
             $number->json_id = $id;
+            $number->version_id = $ver;
             $number->json_key = $key;
             $number->json_value = $value;
             $number->save();
         } else {
             $string = new ProcessString();
             $string->json_id = $id;
+            $string->version_id = $ver;
             $string->json_key = $key;
             $string->json_value = $value;
             $string->save();
@@ -54,6 +56,35 @@ class StoreController extends Controller
     }
     public function store(Request $request, $uuid)
     {
+        // foreach(RawData::all() as $raw){
+        //     $json = json_decode($raw->json, true);
+        //     $raw->boot = (int)(isset($json["VER"]) || 
+        //     isset($json["MD5"]) || 
+        //     isset($json["resetReason"]) || 
+        //     isset($json["enabledSubsystems"]) || 
+        //     isset($json["updateChannel"]) || 
+        //     isset($json["autoUpdate"]));
+        //     $raw->save();
+        //   }
+
+        // foreach(RawData::all() as $raw){
+        //     $json = json_decode($raw->json, true);
+        //     foreach($json as $key=>$value){
+        //         try {
+        //             if(is_array($value)) {
+        //                 foreach($value as $value_key=>$value_value) {
+        //                     $this->process($key . '_' . $value_key, $value_value, $raw->id, RawData::where('sensor_id', $raw->sensor_id)->where('boot', 1)->where('created_at', '<=', $raw->created_at)->latest()->first()->id);
+        //                 }
+        //             } else {
+        //                 $this->process($key, $value, $raw->id, RawData::where('sensor_id', $raw->sensor_id)->where('boot', 1)->where('created_at', '<=', $raw->created_at)->latest()->first()->id);
+        //             }    
+        //         } catch (\Throwable $e) { // For PHP 7
+                    
+        //         }   
+
+        //     }
+        //   }
+        //    dd('ok');
 //        $input = $request->only('json');
         $sensor = Sensor::where('uuid', $uuid)->first();
         Log ::info(print_r($uuid, true));
@@ -76,14 +107,22 @@ class StoreController extends Controller
         $raw->sensor_id = $sensor->id;
         $raw->json = json_encode($json);
         $raw->processed = 1;
+        
+        $raw->boot = (int)(isset($json["VER"]) || 
+        isset($json["MD5"]) || 
+        isset($json["resetReason"]) || 
+        isset($json["enabledSubsystems"]) || 
+        isset($json["updateChannel"]) || 
+        isset($json["autoUpdate"]));
+
         $raw->save();
         foreach($json as $key=>$value){
             if(is_array($value)) {
                 foreach($value as $value_key=>$value_value) {
-                    $this->process($key . '_' . $value_key, $value_value, $raw->id);
+                    $this->process($key . '_' . $value_key, $value_value, $raw->id, RawData::where('sensor_id', $raw->sensor_id)->where('boot', 1)->latest()->first()->id);
                 }
             } else {
-                $this->process($key, $value, $raw->id);
+                $this->process($key, $value, $raw->id, RawData::where('sensor_id', $raw->sensor_id)->where('boot', 1)->latest()->first()->id);
             }
 
 

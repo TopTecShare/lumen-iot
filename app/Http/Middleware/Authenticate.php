@@ -38,8 +38,6 @@ class Authenticate
         if ($this->auth->guard($guard)->guest()) {
             return response('Unauthorized.', 401);
         }
-
-        $request->role = $this->auth->user()->first()->role;
         return $next($request);
     }
 }

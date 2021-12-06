@@ -26,6 +26,8 @@ class CreateRawDataTable extends Migration
             $table->text('json');
             $table->integer('sensor_id')
                 ->nullable(false);
+            $table->integer('boot')
+                ->nullable(false);
         });
     }
 

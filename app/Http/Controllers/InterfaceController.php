@@ -40,7 +40,7 @@ class InterfaceController extends Controller
         $subs = explode('$', $query);   
         for ($i = 0; $i < count($subs); $i++) {
           $sub = explode(' ', $subs[$i]);
-          if(in_array(strtolower($sub[0]), array("created_at", "date", "uuid", "chipid"))) continue;
+          if(in_array(strtolower($sub[0]), array("created_at", "date", "uuid", "chipid", "boot"))) continue;
           if($i > 1 && $subs[$i-1] == '') {
             $sub[0] = $this->concat2($this->concat1('id in
             (select json_id from (        
@@ -48,11 +48,19 @@ class InterfaceController extends Controller
             where (json_id not in (select json_id from process where json_key = "', $sub[0]), '"))) as json)');
           }
           else if(count($sub) > 1 && $i > 0) {
-            $sub[0] = $this->concat1('id in
-            (select json_id from (        
-            select * from process
-            where (json_key = "', $sub[0]) . '" and json_value';
-            $sub[2] = $this->concat2($sub[2], ')) as json)');
+              if(str_starts_with($sub[0], 'b_')){
+                $sub[0] = $this->concat1('id in (select json_id from process where version_id in 
+                (        
+                select version_id from process
+                where (json_key = "', substr($sub[0], 2)) . '" and json_value';
+                $sub[2] = $this->concat2($sub[2], ')))');
+              } else {
+                $sub[0] = $this->concat1('id in
+                (select json_id from (        
+                select * from process
+                where (json_key = "', $sub[0]) . '" and json_value';
+                $sub[2] = $this->concat2($sub[2], ')) as json)');
+              }
           }
           $subs[$i] = implode(' ', $sub); 
         }
@@ -62,7 +70,7 @@ class InterfaceController extends Controller
         union
         select * from process_strings)
         select uuid, json, created_at from (
-				select raw_data.id as id, raw_data.created_at as created_at, raw_data.updated_at as updated_at, raw_data.json as json, sensors.uuid as uuid from raw_data
+				select raw_data.id as id, raw_data.created_at as created_at, raw_data.updated_at as updated_at, raw_data.json as json, raw_data.boot as boot, sensors.uuid as uuid from raw_data
 				right join sensors
 				on raw_data.sensor_id = sensors.id
 				) as process_data

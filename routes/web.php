@@ -71,4 +71,9 @@ $router->get('/migrate', function() {
     return '<h1>Migration finished</h1>';
 });
 
+$router->get('/optimize', function() {
+    $exitCode = Artisan::call('optimize');
+    return '<h1>Optimization finished</h1>';
+});
+
 

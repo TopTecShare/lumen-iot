@@ -26,7 +26,8 @@ class CreateSensorsTable extends Migration
             $table->string('sensor_number', 100)
                 ->default('')
                 ->nullable(false);
-
+            $table->string('nickname', 255)
+                ->default('');
             $table->unique('uuid');
         });
     }

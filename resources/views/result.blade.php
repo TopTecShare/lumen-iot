@@ -7,7 +7,7 @@
     <style>
         @media (min-width: 1400px) {
             .container {
-                max-width: fit-content;
+                max-width: 90%;
             }
         }
         

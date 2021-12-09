@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 
 class ForgotPasswordController extends Controller
 {
@@ -20,16 +21,18 @@ class ForgotPasswordController extends Controller
 
     public function reset()
     {
-        $password = '';
         $user = User::where('email', $_POST['email'])->first();
-        
-        if($user) $password = $user->password;
-        // else return view('forgot');
 
-        $data = array('name'=>$_POST['name'], 'password'=>$password);
+        if(!$user) return redirect('/reset-password');
+        $user->api_token = app('hash')->make($user->password);
+        $user->save();
+        $arr = explode('/', URL::current());
+        array_pop($arr);
+        array_push($arr, 'reset-password?api_token=' . $user->api_token);
+        $data = array('name'=>$_POST['name'], 'token'=>implode('/', $arr));
         try {
             Mail::send('mail', $data, function($message) {
-                $message->to($_POST['email'], $_POST['name'])->subject('Your previous password here!');
+                $message->to($_POST['email'], $_POST['name'])->subject('You can reset password now!');
             });
         } catch (\Throwable $e) { // For PHP 7
             

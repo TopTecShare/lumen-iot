@@ -11,18 +11,21 @@ use App\Models\User;
 class ResetPasswordController extends Controller
 {
     //
-    public function form()
+    public function form(Request $request)
     {
-        return view('reset');
+        $user = null;
+        if($request->input("api_token")) $user = User::where('api_token', $request["api_token"])->first();
+        return view('reset', ['user' => $user]);
     }
 
     public function reset()
     {
       $id = $_POST['email'];
       $pwd = $_POST['old'];
-      $user = User::where('password', $pwd)->where('email', $id)->first();
+      $user = User::where('password', $_POST['old'])->where('email', $id)->first();
       if ($user != null) {
           $user->password = $_POST['password'];
+          $user->api_token = app('hash')->make($user->id . $id . $_POST['password']);
           $user->save();
           return redirect('/sensors');
       } else {

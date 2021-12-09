@@ -16,19 +16,24 @@ class LoginController extends Controller
         return view('login');
     }
 
+    public function auth(Request $request)
+    {
+        return new Response($request->token, 200);
+    }
+
     public function login()
     {
         $id = $_POST['id'];
         $pwd = $_POST['pwd'];
         $user = User::where('password', $pwd)->where('email', $id)->first();
         if ($user != null) {
-            $bytes = random_bytes(15);
-            $user->session = bin2hex($bytes);
+            $user->api_token = app('hash')->make($user->id . $id . $pwd);
+            $user->session = $user->api_token;
             $user->save();
             $_SESSION['sessionid'] = $user->session;
             return redirect('/sensors');
         } else {
-            return redirect('/');
+            return redirect('/forgot-password');
         }
     }
 }

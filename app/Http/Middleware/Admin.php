@@ -15,7 +15,7 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if($request->role != 'admin') return response('Unauthorized.', 403);
+        if($request->role != 'admin') return redirect('/login');
         return $next($request);
     }
 }

@@ -1,50 +1,59 @@
 <html>
-    <head>
-        <title>CNAM</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-        />
-    </head>
-    <body class="container">
-        <form action="/reset-password" accept-charset="UTF-8" method="post">
-            <p>
-                adres e-mail:
-                <br />
-                <input type="text" value="" name="email" />
-            </p>
-            <p>
-                stare hasło
-                <br />
-                <input type="password" name="old" required />
-            </p>
-            <p>
-                nowe hasło
-                <br />
-                <input type="password" name="password" required />
-            </p>
-            <p>
-                potwierdź hasło
-                <br />
-                <input type="password" name="confirm" required />
-            </p>
 
-            <p>
-                <input
-                    type="submit"
-                    name="commit"
-                    class="btn btn-success"
-                    value="Wyślij maila"
-                    class="btn"
-                />
-            </p>
-        </form>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+<head>
+    <title>CNAM</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+
+<body class="container">
+    <form action="/reset-password" accept-charset="UTF-8" method="post">
+        @if($user)
+        <input type="text" hidden value="{{$user->email}}" name="email" />
+        <input name="old" hidden value="{{$user->password}}" required /> @else
+        <p>
+            adres e-mail:
+            <br />
+            <input type="text" value="" name="email" />
+        </p>
+        <p>
+            stare hasło
+            <br />
+            <input name="old" required />
+        </p>
+        @endif
+        <p>
+            nowe hasło
+            <br />
+            <input type="password" id="password" name="password" required />
+        </p>
+        <p>
+            potwierdź hasło
+            <br />
+            <input type="password" id="password_confirm" name="password_confirm" required />
+        </p>
+
+        <p>
+            <input type="submit" name="commit" class="btn btn-success" value="potwierdź" class="btn" />
+        </p>
+    </form>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+        $("form").validate({
+            rules: {
+                password: {
+                    minlength: 5,
+                },
+                password_confirm: {
+                    minlength: 5,
+                    equalTo: "#password",
+                },
+            },
+        });
+    </script>
+</body>
+
 </html>

@@ -1,29 +1,90 @@
 <html>
-    <head>
-        <title>CNAM</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-            crossorigin="anonymous"
-        />
-    </head>
-    <body class="container">
-        AAA
-        <table class="table">
-            @foreach($sensor->rawDataPoints as $dp)
-            <tr>
-                <td>
-                    {{ print_r($dp->json, true) }}
-                </td>
-                <td>{{$dp->created_at->setTimeZone($tz)}}</td>
-            </tr>
-            @endforeach
-        </table>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+
+<head>
+    <title>CNAM</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<style>
+    a {
+        float: right;
+        margin-right: 10%;
+    }
+</style>
+
+<body class="container">
+    <span style="font-weight: bold; font-size: 1.5em"> Nickname: </span
+        >{{ $sensor->nickname }}
+
+        <a
+            ><form action="/sensors" accept-charset="UTF-8" method="post">
+                <input
+                    type="hidden"
+                    class="form-control"
+                    name="uuid"
+                    value="{{$sensor->uuid}}"
+                />
+                @if($dashboard)
+                <input
+                    type="submit"
+                    class="btn btn-success"
+                    value="Remove From Dashboard"
+                />
+                <input type="hidden" name="_method" value="DELETE" />
+                @else
+                <input
+                    type="submit"
+                    class="btn btn-success"
+                    value="Add To Dashboard"
+                />
+                @endif
+            </form></a
+        >
+        <a class="btn btn-success" data-toggle="modal" href="#nickname">
+            @if($sensor->nickname == "") <span>Add </span> @else
+    <span>Edit </span> @endif Nickname
+    </a>
+
+    <table class="table">
+        @foreach($sensor->rawDataPoints as $dp)
+        <tr>
+            <td>{{ print_r($dp->json, true) }}</td>
+            <td>{{ $dp->created_at->setTimeZone($tz) }}</td>
+        </tr>
+        @endforeach
+    </table>
+    <div id="nickname" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/sensors" accept-charset="UTF-8" method="post">
+                    <input type="hidden" name="_method" value="PUT" />
+                    <div class="modal-header">
+                        <h4 class="modal-title">Nickname</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nickname</label>
+                            <input type="text" class="form-control" name="nickname" value="{{$sensor->nickname}}" />
+                            <input type="hidden" class="form-control" name="uuid" value="{{$sensor->uuid}}" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" />
+                        <input type="submit" class="btn btn-success" value="Confirm" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script>
+        $('[data-toggle="tooltip"]').tooltip();
+    </script>
+</body>
+
 </html>

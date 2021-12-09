@@ -344,7 +344,13 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->role }}</td>
-                                <td>{{ $user->password }}</td>
+                                <td>
+                                    <input
+                                        disabled
+                                        type="password"
+                                        value="{{$user->password}}"
+                                    />
+                                </td>
                                 <td>
                                     <a
                                         href="#editUserModal"
@@ -382,7 +388,7 @@
         <div id="addUserModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="/admin" accept-charset="UTF-8" method="post">
+                    <form action="" accept-charset="UTF-8" method="post">
                         <div class="modal-header">
                             <h4 class="modal-title">Add User</h4>
                             <button
@@ -425,8 +431,19 @@
                             <div class="form-group">
                                 <label>Password</label>
                                 <input
-                                    type="text"
+                                    type="password"
+                                    id="password"
+                                    class="form-control"
                                     name="password"
+                                    required
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input
+                                    type="password"
+                                    id="password_confirm"
+                                    name="password_confirm"
                                     class="form-control"
                                     required
                                 />
@@ -453,7 +470,7 @@
         <div id="editUserModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="/admin" accept-charset="UTF-8" method="post">
+                    <form action="" accept-charset="UTF-8" method="post">
                         <input type="hidden" name="_method" value="PUT" />
                         <div class="modal-header">
                             <h4 class="modal-title">Edit User</h4>
@@ -482,6 +499,7 @@
                                     type="email"
                                     class="form-control"
                                     name="email"
+                                    pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}"
                                     required
                                 />
                             </div>
@@ -497,9 +515,20 @@
                             <div class="form-group">
                                 <label>Password</label>
                                 <input
-                                    type="text"
+                                    type="password"
+                                    id="password"
                                     class="form-control"
                                     name="password"
+                                    required
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input
+                                    type="password"
+                                    id="password_confirm"
+                                    name="password_confirm"
+                                    class="form-control"
                                     required
                                 />
                             </div>
@@ -525,7 +554,7 @@
         <div id="deleteUserModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="/admin" accept-charset="UTF-8" method="post">
+                    <form action="" accept-charset="UTF-8" method="post">
                         <input type="hidden" name="_method" value="DELETE" />
                         <input type="hidden" name="email" />
                         <div class="modal-header">
@@ -610,6 +639,7 @@
         <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
         <script>
             $(document).ready(function () {
                 $(".datatable").DataTable({
@@ -664,15 +694,29 @@
                 });
             });
             const edit = (user) => {
-                user = user.split(', ');
-                $('#editUserModal').find('input[name="name"]').val(user[0]);
-                $('#editUserModal').find('input[name="email"]').val(user[1]);
-                $('#editUserModal').find('input[name="role"]').val(user[2]);
-                $('#editUserModal').find('input[name="password"]').val(user[3]);
+                user = user.split(", ");
+                $("#editUserModal").find('input[name="name"]').val(user[0]);
+                $("#editUserModal").find('input[name="email"]').val(user[1]);
+                $("#editUserModal").find('input[name="role"]').val(user[2]);
+                $("#editUserModal").find('input[name="password"]').val(user[3]);
+                $("#editUserModal")
+                    .find('input[name="password_confirm"]')
+                    .val(user[3]);
             };
             const del = (email) => {
-                $('#deleteUserModal').find('input[name="email"]').val(email);
-            }
+                $("#deleteUserModal").find('input[name="email"]').val(email);
+            };
+            $("form").validate({
+                rules: {
+                    password: {
+                        minlength: 5,
+                    },
+                    password_confirm: {
+                        minlength: 5,
+                        equalTo: "#password",
+                    },
+                },
+            });
         </script>
     </body>
 </html>

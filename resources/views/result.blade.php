@@ -95,8 +95,7 @@
 <body class="container">
     <form action="/interface" accept-charset="UTF-8" method="post">
         <p>
-            Komenda:
-            <br>
+            Komenda: <span style="color:red">@isset($error) {{ $error }} @endisset</span> <br>
             <textarea type="query" name="query" class="form-control" rows="15">{{$query}}</textarea>
         </p>
         <p><input type="submit" name="commit" class="btn btn-success" value="Załaduj" class="btn"></p>
@@ -126,7 +125,8 @@
                         @foreach($results as $result)
                         <tr>
                             <td>{{ ++$loop->index }}</td>
-                            <td>{{$result->uuid}}</td>
+                            <td><a href="/sensors/{{$result->uuid}}">{{$result->uuid}}</a
+                                ></td>
                             <td>{{$result->json}}</td>
                             <td>{{$result->created_at}}</td>
                         </tr>

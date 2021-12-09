@@ -25,14 +25,44 @@ $router->get('/sensors/{uuid}', [
         'uses' => 'SensorController@show'
     ]
 );
+
+$router->put('/sensors', [
+    'middleware' => 'auth',
+    'uses' => 'SensorController@nickname'
+]
+);
+
+$router->post('/sensors', [
+    'middleware' => 'auth',
+    'uses' => 'SensorController@add'
+]
+);
+
+$router->delete('/sensors', [
+    'middleware' => 'auth',
+    'uses' => 'SensorController@delete'
+]
+);
+
 $router->get('/sensors', [
     'middleware' => 'auth',
     'uses' => 'SensorController@index'
 ]);
+
+$router->get('/dashboard', [
+    'middleware' => 'auth',
+    'uses' => 'DashboardController@index'
+]);
+
 $router->post('/lora/{id}', 'LoraController@lora');
 
 $router->get('/login','LoginController@form');
 $router->post('/login','LoginController@login');
+
+$router->get('/auth', [
+    'middleware' => 'auth',
+    'uses' => 'LoginController@auth'
+]);
 
 $router->get('/forgot-password','ForgotPasswordController@form');
 $router->post('/forgot-password','ForgotPasswordController@reset');

@@ -25,4 +25,9 @@ class Sensor extends Model
         return $this->hasMany(RawData::class)->orderBy('created_at', 'desc');
     }
 
+    public function dashboard()
+    {
+        return $this->hasMany(Dashboard::class);
+    }
+
 }

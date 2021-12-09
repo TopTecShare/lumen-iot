@@ -20,6 +20,8 @@ class AdminController extends Controller
     public function create(Request $request)
     {
         if(!($_POST['role'] == 'user' || $_POST['role'] == 'admin')) return redirect('/admin');
+        $user = User::where('email', $_POST['email'])->first();
+        if($user != null) return redirect('/admin');
         $user = new User();
         $user->name = $_POST['name'];
         $user->email = $_POST['email'];
@@ -33,7 +35,7 @@ class AdminController extends Controller
     {
         if(!($_POST['role'] == 'user' || $_POST['role'] == 'admin')) return redirect('/admin');
         $user = User::where('email', $_POST['email'])->first();
-        if($user == null) redirect('/admin');
+        if($user == null) return redirect('/admin');
         $user->name = $_POST['name'];
         $user->email = $_POST['email'];
         $user->role = $_POST['role'];

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use App\Models\User;
 
 class Authenticate
 {
@@ -35,9 +36,24 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        $token = $request->header('x-access-token');
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            if(!$token)
+            return redirect('/login');
         }
+        try {            
+            $user = $this->auth->user();
+            if($token && !isset($user->role)) $user = User::where('api_token', $token)->first();
+            if(!isset($user->role)) $user = $user->first();
+            $request->role = $user->role;          
+            $request->token = $user->api_token;
+            $request->id = $user->id;
+            $user->session = $user->api_token;
+            $user->save();
+            $_SESSION['sessionid'] = $request->token;
+        } catch (\Throwable $e) { // For PHP 7
+            return redirect('/login');
+        } 
         return $next($request);
     }
 }

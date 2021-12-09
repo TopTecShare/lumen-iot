@@ -6,7 +6,7 @@
 </head>
 
 <body class="container">
-    <form action="/interface" accept-charset="UTF-8" method="post">
+    <form action="" accept-charset="UTF-8" method="post">
         <p>
             Komenda:
             <br />

@@ -13,6 +13,7 @@ class RegisterController extends Controller
         $sensor = new Sensor;
         $sensor->sensor_number = $sensorID;
         $sensor->uuid = Sensor::guidv4();
+        $sensor->nickname = "";
         $sensor->save();
         return(new Response($sensor->uuid,200));
     }

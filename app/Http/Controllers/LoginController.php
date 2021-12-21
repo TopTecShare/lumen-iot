@@ -27,8 +27,9 @@ class LoginController extends Controller
         $pwd = $_POST['pwd'];
         $user = User::where('password', $pwd)->where('email', $id)->first();
         if ($user != null) {
-            $user->api_token = app('hash')->make($user->id . $id . $pwd);
-            $user->session = $user->api_token;
+            $user->api_token = hash('sha256', $user->id . $id . $pwd);
+            $bytes = random_bytes(15);
+            $user->session = bin2hex($bytes);
             $user->save();
             $_SESSION['sessionid'] = $user->session;
             return redirect('/sensors');

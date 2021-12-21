@@ -47,10 +47,9 @@ class Authenticate
             if(!isset($user->role)) $user = $user->first();
             $request->role = $user->role;          
             $request->token = $user->api_token;
-            $request->id = $user->id;
-            $user->session = $user->api_token;
+            $request->id = $user->id;            
             $user->save();
-            $_SESSION['sessionid'] = $request->token;
+            $_SESSION['sessionid'] = $user->session;
         } catch (\Throwable $e) { // For PHP 7
             return redirect('/login');
         } 

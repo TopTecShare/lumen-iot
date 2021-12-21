@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
       $user = User::where('password', $_POST['old'])->where('email', $id)->first();
       if ($user != null) {
           $user->password = $_POST['password'];
-          $user->api_token = app('hash')->make($user->id . $id . $_POST['password']);
+          $user->api_token = hash($user->id . $id . $_POST['password']);
           $user->save();
           return redirect('/sensors');
       } else {

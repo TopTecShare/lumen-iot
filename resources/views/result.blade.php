@@ -10,7 +10,9 @@
                 max-width: 90%;
             }
         }
-        
+        body{
+            word-break: break-word;
+        }
         .table-responsive {
             margin: 30px 0;
         }
@@ -89,10 +91,16 @@
             font-size: 22px;
             margin: 0 5px;
         }
+
+        .interface {
+                background-color: #04aa6d;
+                color: white !important;
+            }
     </style>
 </head>
 
 <body class="container">
+    @include('navbar')
     <form action="/interface" accept-charset="UTF-8" method="post">
         <p>
             Komenda: <span style="color:red">@isset($error) {{ $error }} @endisset</span> <br>
@@ -119,6 +127,7 @@
                         <th>Uuid</th>
                         <th>Json</th>
                         <th>Created at</th>
+                        <th>Nickname</th>
                     </tr>
                     </tbody>
                     <tbody>
@@ -129,6 +138,7 @@
                                 ></td>
                             <td>{{$result->json}}</td>
                             <td>{{$result->created_at}}</td>
+                            <td>{{$result->nickname}}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -27,7 +27,7 @@ class DashboardController extends BaseController
 
       $dashboards = Dashboard::with('sensor')->where('user_id', $request->id)->get();
       $timezone = new \DateTimeZone('Europe/Warsaw');
-      return view('dashboard', ['dashboard' => $dashboard, 'dashboards' => $dashboards, 'tz' => $timezone]);
+      return view('dashboard', ['dashboard' => $dashboard, 'dashboards' => $dashboards, 'tz' => $timezone, 'admin'=>$request->role == 'admin']);
     }
 
 }

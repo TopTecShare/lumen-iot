@@ -11,9 +11,9 @@ use DB;
 class InterfaceController extends Controller
 {
     //
-    public function form()
+    public function form(Request $request)
     {
-        return view('interface');
+        return view('interface', ['admin'=>$request->role == 'admin']);
     }
 
     public function concat1($str1, $str2) {
@@ -30,7 +30,7 @@ class InterfaceController extends Controller
       }
     }
 
-    public function get()
+    public function get(Request $request)
     {
         $query = $_POST['query'];
 
@@ -48,7 +48,9 @@ class InterfaceController extends Controller
             where (json_id not in (select json_id from process where json_key = "', $sub[0]), '"))) as json)');
           }
           else if(count($sub) > 1 && $i > 0) {
-              if(!isset($sub[2])) return view('result',['results' => [], 'query' => $_POST['query'], 'error' => 'Incorrect operator usage']);
+              if(!isset($sub[2])) 
+                if(isset($_POST['machine'])) return new Response('Incorrect operator usage', 200);
+                else return view('result',['results' => [], 'query' => $_POST['query'], 'error' => 'Incorrect operator usage', 'admin'=>$request->role == 'admin']);
               if(str_starts_with($sub[0], 'b_')){
                 
                 $sub[0] = $this->concat1('id in (select json_id from process where version_id in 
@@ -73,8 +75,8 @@ class InterfaceController extends Controller
         select * from process_numbers
         union
         select * from process_strings)
-        select uuid, json, created_at from (
-				select raw_data.id as id, raw_data.created_at as created_at, raw_data.updated_at as updated_at, raw_data.json as json, raw_data.boot as boot, sensors.uuid as uuid from raw_data
+        select uuid, json, created_at, nickname from (
+				select raw_data.id as id, raw_data.created_at as created_at, raw_data.updated_at as updated_at, raw_data.json as json, raw_data.boot as boot, sensors.nickname as nickname, sensors.uuid as uuid from raw_data
 				right join sensors
 				on raw_data.sensor_id = sensors.id
 				) as process_data
@@ -84,9 +86,9 @@ class InterfaceController extends Controller
         try {
             $results = DB::select($query);
             if(isset($_POST['machine'])) return new Response($results, 200);
-            return view('result',['results' => $results, 'query' => $_POST['query']]);
+            return view('result',['results' => $results, 'query' => $_POST['query'], 'admin'=>$request->role == 'admin']);
         } catch (\Throwable $e) { // For PHP 7
-          if(isset($_POST['machine'])) return new Response([], 200);
+          if(isset($_POST['machine'])) return new Response('Incorrect query', 200);
             return view('result',['results' => [], 'query' => $_POST['query'], 'error' => 'Incorrect query']);
         } 
         

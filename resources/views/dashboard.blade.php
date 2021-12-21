@@ -14,6 +14,7 @@
             background: #f5f5f5;
             font-family: "Varela Round", sans-serif;
             font-size: 13px;
+            word-break: break-word;
         }
         
         .table-responsive {
@@ -56,11 +57,17 @@
             color: darkslategray;
             vertical-align: middle;
         }
+
+        .dashboard {
+            background-color: #04aa6d;
+            color: white !important;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
+        @include('navbar')
         <div class="table-responsive">
             <div class="table-wrapper">
                 <div class="table-title">
@@ -120,8 +127,6 @@
                             <tr>
 
                                 <td>{{ print_r($dp->json, true) }}</td>
-                                <td></td>
-                                <td></td>
 
                                 <td>{{ $dp->created_at->setTimeZone($tz) }}</td>
                             </tr>

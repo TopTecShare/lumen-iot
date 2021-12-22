@@ -5,12 +5,16 @@
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         />
+        <link
+            rel="stylesheet"
+            href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"
+        />
     </head>
     <style>
         body {
             word-break: break-word;
         }
-        a {
+        .right {
             float: right;
             margin-right: 10%;
         }
@@ -21,7 +25,7 @@
         <span style="font-weight: bold; font-size: 1.5em"> Nickname: </span
         >{{ $sensor->nickname }}
 
-        <a
+        <a class="right"
             ><form action="/sensors" accept-charset="UTF-8" method="post">
                 <input
                     type="hidden"
@@ -45,18 +49,26 @@
                 @endif
             </form></a
         >
-        <a class="btn btn-success" data-toggle="modal" href="#nickname">
+        <a class="btn btn-success right" data-toggle="modal" href="#nickname">
             @if($sensor->nickname == "") <span>Add </span> @else
             <span>Edit </span> @endif Nickname
         </a>
 
-        <table class="table">
-            @foreach($sensor->rawDataPoints as $dp)
-            <tr>
-                <td>{{ print_r($dp->json, true) }}</td>
-                <td>{{ $dp->created_at->setTimeZone($tz) }}</td>
-            </tr>
-            @endforeach
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th>Json</th>
+                    <th>Created at</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($sensor->rawDataPoints as $dp)
+                <tr>
+                    <td>{{ print_r($dp->json, true) }}</td>
+                    <td>{{ $dp->created_at->setTimeZone($tz) }}</td>
+                </tr>
+                @endforeach
+            </tbody>
         </table>
         <div id="nickname" class="modal fade">
             <div class="modal-dialog">
@@ -116,8 +128,41 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script>
-            $('[data-toggle="tooltip"]').tooltip();
+            $(document).ready(function () {
+                $(".datatable").DataTable({
+                    language: {
+                        sProcessing: "Przetwarzanie...",
+                        sLengthMenu: "Pokaż _MENU_ pozycji",
+                        sZeroRecords: "Nie znaleziono pasujących pozycji",
+                        sInfoThousands: " ",
+                        sInfo: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                        sInfoEmpty: "Pozycji 0 z 0 dostępnych",
+                        sInfoFiltered:
+                            "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                        sInfoPostFix: "",
+                        sSearch: "Szukaj:",
+                        sUrl: "",
+                        oPaginate: {
+                            sFirst: "Pierwsza",
+                            sPrevious: "Poprzednia",
+                            sNext: "Następna",
+                            sLast: "Ostatnia",
+                        },
+                        sEmptyTable: "Brak danych",
+                        sLoadingRecords: "Wczytywanie...",
+                        oAria: {
+                            sSortAscending:
+                                ": aktywuj, by posortować kolumnę rosnąco",
+                            sSortDescending:
+                                ": aktywuj, by posortować kolumnę malejąco",
+                        },
+                    },
+                });
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         </script>
     </body>
 </html>

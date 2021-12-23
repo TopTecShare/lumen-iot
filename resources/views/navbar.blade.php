@@ -4,20 +4,23 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background-color: #333;
         position: sticky;
         top: 0;
         margin-bottom: 30px;
         width: 100%;
-        z-index:9999;
+        z-index: 9999;
         word-break: normal;
+    }
+
+    .headbar {
+        background-color: #333;
     }
 
     li {
         float: left;
     }
 
-    li a {
+    .headbar li a {
         display: block;
         color: white;
         text-align: center;
@@ -25,7 +28,7 @@
         text-decoration: none !important;
     }
 
-    li a:hover:not(.active) {
+    .headbar li a:hover:not(.active) {
         background-color: #111;
         color: white !important;
     }
@@ -35,7 +38,7 @@
         color: white !important;
     }
 </style>
-<ul>
+<ul class="headbar">
     @isset($admin) @if($admin)
     <li><a href="/admin" class="admin">Admin</a></li>
     @endisset @endif

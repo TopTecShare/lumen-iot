@@ -62,7 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($sensor->rawDataPoints as $dp)
+                @foreach($json as $dp)
                 <tr>
                     <td>{{ print_r($dp->json, true) }}</td>
                     <td>{{ $dp->created_at->setTimeZone($tz) }}</td>
@@ -70,6 +70,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="pagination">
+            {{ $json->links('pagination::bootstrap-4') }}
+        </div>
         <div id="nickname" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -132,35 +135,6 @@
         <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script>
             $(document).ready(function () {
-                $(".datatable").DataTable({
-                    language: {
-                        sProcessing: "Przetwarzanie...",
-                        sLengthMenu: "Pokaż _MENU_ pozycji",
-                        sZeroRecords: "Nie znaleziono pasujących pozycji",
-                        sInfoThousands: " ",
-                        sInfo: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        sInfoEmpty: "Pozycji 0 z 0 dostępnych",
-                        sInfoFiltered:
-                            "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        sInfoPostFix: "",
-                        sSearch: "Szukaj:",
-                        sUrl: "",
-                        oPaginate: {
-                            sFirst: "Pierwsza",
-                            sPrevious: "Poprzednia",
-                            sNext: "Następna",
-                            sLast: "Ostatnia",
-                        },
-                        sEmptyTable: "Brak danych",
-                        sLoadingRecords: "Wczytywanie...",
-                        oAria: {
-                            sSortAscending:
-                                ": aktywuj, by posortować kolumnę rosnąco",
-                            sSortDescending:
-                                ": aktywuj, by posortować kolumnę malejąco",
-                        },
-                    },
-                });
                 $('[data-toggle="tooltip"]').tooltip();
             });
         </script>

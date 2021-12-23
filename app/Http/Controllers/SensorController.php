@@ -21,12 +21,13 @@ class SensorController extends Controller
             return (new Response('', 404));
         }
         $timezone = new \DateTimeZone('Europe/Warsaw');
+        $json = $sensor->rawDataPoints()->paginate(10);
 
-        return view('sensor',['sensor' => $sensor, 'tz' => $timezone, 'dashboard' => $dashboard, 'admin'=>$request->role == 'admin']);
+        return view('sensor',['sensor' => $sensor, 'json' => $json, 'tz' => $timezone, 'dashboard' => $dashboard, 'admin'=>$request->role == 'admin']);
     }
     public function index(Request $request)
     {
-        $sensors = Sensor::withCount('rawDatapoints')->orderBy('raw_datapoints_count', 'desc')->get();
+        $sensors = Sensor::withCount('rawDatapoints')->orderBy('raw_datapoints_count', 'desc')->paginate(10);
         return view('sensors',['sensors' => $sensors, 'admin'=>$request->role == 'admin']);
     }
     public function nickname(Request $request)

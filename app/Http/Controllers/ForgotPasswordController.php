@@ -24,7 +24,7 @@ class ForgotPasswordController extends Controller
         $user = User::where('email', $_POST['email'])->first();
 
         if(!$user) return redirect('/reset-password');
-        $user->api_token = hash($user->password);
+        $user->api_token = hash('sha256', $user->password);
         $user->save();
         $arr = explode('/', URL::current());
         array_pop($arr);
